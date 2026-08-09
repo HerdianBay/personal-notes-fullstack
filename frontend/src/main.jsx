@@ -13,26 +13,42 @@ import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import { UserProvider } from "./context/UserProvider.jsx";
 import LanguageProvider from "./context/LanguageProvider.jsx";
 
+// createRoot(document.getElementById("root")).render(
+//   <BrowserRouter>
+//     <ThemeProvider>
+//       <UserProvider>
+//         <LanguageProvider>
+//           <Routes>
+//             <Route element={<ProtectedRoute />}>
+//               <Route path="/" element={<Home />} />
+//               <Route path="/archive" element={<Archive />} />
+//               <Route path="/notes">
+//                 <Route path=":notesId" element={<DetailNotes />} />
+//                 <Route path="new" element={<AddNotes />} />
+//               </Route>
+//             </Route>
+//             <Route path="/login" element={<Login />} />
+//             <Route path="/register" element={<Register />} />
+//             <Route path="*" element={<Error />} />
+//           </Routes>
+//         </LanguageProvider>
+//       </UserProvider>
+//     </ThemeProvider>
+//   </BrowserRouter>,
+// );
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <ThemeProvider>
-      <UserProvider>
-        <LanguageProvider>
-          <Routes>
-            <Route element={<ProtectedRoute />}>
-              <Route path="/" element={<Home />} />
-              <Route path="/archive" element={<Archive />} />
-              <Route path="/notes">
-                <Route path=":notesId" element={<DetailNotes />} />
-                <Route path="new" element={<AddNotes />} />
-              </Route>
-            </Route>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="*" element={<Error />} />
-          </Routes>
-        </LanguageProvider>
-      </UserProvider>
+      <LanguageProvider>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/archive" element={<Archive />} />
+          <Route path="/notes">
+            <Route path=":notesId" element={<DetailNotes />} />
+            <Route path="new" element={<AddNotes />} />
+          </Route>
+        </Routes>
+      </LanguageProvider>
     </ThemeProvider>
-  </BrowserRouter>
+  </BrowserRouter>,
 );

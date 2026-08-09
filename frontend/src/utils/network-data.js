@@ -1,4 +1,4 @@
-const BASE_URL = "https://notes-api.dicoding.dev/v1";
+const BASE_URL = "http://127.0.0.1:8000/api";
 
 function getAccessToken() {
   return localStorage.getItem("accessToken");
@@ -6,16 +6,6 @@ function getAccessToken() {
 
 function putAccessToken(accessToken) {
   return localStorage.setItem("accessToken", accessToken);
-}
-
-async function fetchWithToken(url, options = {}) {
-  return fetch(url, {
-    ...options,
-    headers: {
-      ...options.headers,
-      Authorization: `Bearer ${getAccessToken()}`,
-    },
-  });
 }
 
 async function login({ email, password }) {
@@ -57,7 +47,7 @@ async function register({ name, email, password }) {
 }
 
 async function getUserLogged() {
-  const response = await fetchWithToken(`${BASE_URL}/users/me`);
+  const response = await fetch(`${BASE_URL}/users/me`);
   const responseJson = await response.json();
 
   if (responseJson.status !== "success") {
@@ -68,7 +58,7 @@ async function getUserLogged() {
 }
 
 async function addNote({ title, body }) {
-  const response = await fetchWithToken(`${BASE_URL}/notes`, {
+  const response = await fetch(`${BASE_URL}/notes`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -86,41 +76,41 @@ async function addNote({ title, body }) {
 }
 
 async function getActiveNotes() {
-  const response = await fetchWithToken(`${BASE_URL}/notes`);
+  const response = await fetch(`${BASE_URL}/notes`);
   const responseJson = await response.json();
 
   if (responseJson.status !== "success") {
     return { error: true, data: null };
   }
 
-  return { error: false, data: responseJson.data };
+  return { error: false, data: responseJson.data.map(mapNote) };
 }
 
 async function getArchivedNotes() {
-  const response = await fetchWithToken(`${BASE_URL}/notes/archived`);
+  const response = await fetch(`${BASE_URL}/notes/archived`);
   const responseJson = await response.json();
 
   if (responseJson.status !== "success") {
     return { error: true, data: null };
   }
 
-  return { error: false, data: responseJson.data };
+  return { error: false, data: responseJson.data.map(mapNote) };
 }
 
 async function getNote(id) {
-  const response = await fetchWithToken(`${BASE_URL}/notes/${id}`);
+  const response = await fetch(`${BASE_URL}/notes/${id}`);
   const responseJson = await response.json();
 
   if (responseJson.status !== "success") {
     return { error: true, data: null };
   }
 
-  return { error: false, data: responseJson.data };
+  return { error: false, data: mapNote(responseJson.data) };
 }
 
 async function archiveNote(id) {
-  const response = await fetchWithToken(`${BASE_URL}/notes/${id}/archive`, {
-    method: "POST",
+  const response = await fetch(`${BASE_URL}/notes/${id}/archive`, {
+    method: "PATCH",
   });
 
   const responseJson = await response.json();
@@ -133,8 +123,8 @@ async function archiveNote(id) {
 }
 
 async function unarchiveNote(id) {
-  const response = await fetchWithToken(`${BASE_URL}/notes/${id}/unarchive`, {
-    method: "POST",
+  const response = await fetch(`${BASE_URL}/notes/${id}/unarchive`, {
+    method: "PATCH",
   });
 
   const responseJson = await response.json();
@@ -147,7 +137,7 @@ async function unarchiveNote(id) {
 }
 
 async function deleteNote(id) {
-  const response = await fetchWithToken(`${BASE_URL}/notes/${id}`, {
+  const response = await fetch(`${BASE_URL}/notes/${id}`, {
     method: "DELETE",
   });
 
@@ -158,6 +148,17 @@ async function deleteNote(id) {
   }
 
   return { error: false, data: responseJson.data };
+}
+
+function mapNote(note) {
+  return {
+    id: note.id,
+    title: note.title,
+    body: note.body,
+    archived: note.archived,
+    createdAt: note.created_at,
+    updatedAt: note.updated_at,
+  };
 }
 
 export {

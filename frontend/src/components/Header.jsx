@@ -1,22 +1,22 @@
 import { useContext } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 import { ThemeContext } from "../context/ThemeContext";
-import { UserContext } from "../context/UserContext";
+// import { UserContext } from "../context/UserContext";
 import { LanguageContext } from "../context/LanguageContext";
 export default function Header() {
   const { darkMode, toggleTheme } = useContext(ThemeContext);
-  const { user, setUser } = useContext(UserContext);
+  // const { user, setUser } = useContext(UserContext);
   const { language, toggleLanguage } = useContext(LanguageContext);
   const iconColor = darkMode ? "#FFFFFF" : "#000000";
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  const handleLogOut = () => {
-    localStorage.removeItem("accessToken");
-    setUser(null);
-    navigate({
-      pathname: "/login",
-    });
-  };
+  // const handleLogOut = () => {
+  //   localStorage.removeItem("accessToken");
+  //   setUser(null);
+  //   navigate({
+  //     pathname: "/login",
+  //   });
+  // };
   return (
     <>
       <header
@@ -88,10 +88,7 @@ export default function Header() {
               )}
             </li>
             <li className="flex">
-              <button
-                onClick={handleLogOut}
-                className="hover:cursor-pointer flex items-center gap-4"
-              >
+              {/* <button className="hover:cursor-pointer flex items-center gap-4">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="36"
@@ -103,7 +100,7 @@ export default function Header() {
                   <path d="M20 3H10c-1.1 0-2 .9-2 2v4h2V5h10v14H10v-4H8v4c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"></path>
                 </svg>
                 <p className="text-2xl">{user && user.name}</p>
-              </button>
+              </button> */}
             </li>
           </ul>
         </nav>

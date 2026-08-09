@@ -46,7 +46,7 @@ function Home() {
 
   if (activeList.length !== 0) {
     filteredNote = activeList.filter((note) =>
-      note.title.toLowerCase().includes(keyword.toLowerCase())
+      note.title.toLowerCase().includes(keyword.toLowerCase()),
     );
   }
   return (
